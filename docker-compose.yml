@@ -1,0 +1,35 @@
+services:
+  mit: 
+    image: chunwei/mitaskem-api:latest
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8000"]
+        interval: 5s
+        timeout: 10s
+        retries: 1
+  mit_client:
+    image: enoriega87/mit-client:latest
+    environment:
+      - MIT_API=mit
+      - OPENAI_KEY={YOUR_OPENAI_API_KEY}
+    volumes:
+      - ./inputs:/data/inputs
+      - ./outputs:/data/outputs
+    depends_on:
+      mit:
+        condition: service_healthy
+  arizona:
+    image: enoriega87/skema_tr:0.3
+    volumes:
+      - ./inputs:/data/inputs
+      - ./outputs:/data/outputs
+    command: java -Xmx32g -cp ./target/scala-2.12/skema_text_reading-assembly-0.1.0-SNAPSHOT.jar org.ml4ai.skema.text_reading.apps.AnnotatePlainTextFiles -o /data/outputs /data/inputs
+  data_format:
+    image: enoriega87/askem_ta1_datamodel:0.1
+    depends_on:
+      arizona:
+        condition: service_completed_successfully
+      mit_client:
+        condition: service_completed_successfully
+    volumes:
+      - ./outputs:/data
+    command: python process_directory.py -o /data /data
