@@ -1,0 +1,40 @@
+# Docker Compose file for skema services
+version: "3"
+
+networks:
+  skema_net:
+    external: true
+
+services:
+  img2mml:
+    image: lumai/askem-skema-img2mml:latest
+    container_name: img2mml
+    entrypoint: uvicorn img2mml:app --host=0.0.0.0 --port=8020
+    ports:
+      - "8020:8020"
+    networks:
+      skema_net:
+        aliases:
+          - "img2mml" 
+
+  skema-py:
+    image: lumai/askem-skema-py:latest
+    container_name: skema-py
+    ports:
+    - "8010:8010" 
+    command: ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8010"]
+    networks:
+      skema_net:
+        aliases:
+          - "skema-py" 
+
+  skema-rs:
+    image: lumai/askem-skema-rs:latest
+    container_name: skema-rs
+    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --db-host database
+    ports:
+      - "8080:8080"
+    networks:
+      skema_net:
+        aliases:
+          - "skema-rs"  # use ${AGENT_NAME} before deploying
