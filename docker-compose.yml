@@ -1,3 +1,4 @@
+version: '2.3'
 services:
   mit: 
     image: chunwei/mitaskem-api:latest
@@ -26,7 +27,7 @@ services:
       - ./outputs:/data/outputs
     command: java -Xmx32g -cp ./target/scala-2.12/skema_text_reading-assembly-0.1.0-SNAPSHOT.jar org.ml4ai.skema.text_reading.apps.AnnotatePlainTextFiles -o /data/outputs /data/inputs
   data_format:
-    image: enoriega87/askem_ta1_datamodel:0.1
+    image: lumai/askem-text-reading-utilities:sha-5273bbb
     depends_on:
       arizona:
         condition: service_completed_successfully
