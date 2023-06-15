@@ -1,0 +1,26 @@
+# Automatically adds issues to the Integration Github project
+# if the issue is tagged with `integration`
+
+name: "Add issues to lum-ai-skema project board"
+
+on:
+  issues:
+    types:
+      - reopened
+      - opened
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Add issues to project
+    runs-on: ubuntu-latest
+    steps:
+      # see https://github.com/marketplace/actions/add-to-github-projects
+      - uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.com/orgs/lum-ai/projects/6
+          github-token: ${{ secrets.LUM_SKEMA_PAT }}
+          #labeled: "some label"
+          #label-operator: OR # AND, OR or NOT
