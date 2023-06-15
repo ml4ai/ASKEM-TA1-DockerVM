@@ -32,10 +32,9 @@ The following containers should be running
 skema-rs
 skema-py
 img2mml
-latex2mml
 ```
 </l>
-<p><b>FIXME:</b> Include the MathML container</p>
+<p><b>FIXME:</b> Include the mathjax server container</p>
 
 ## Testing
 
