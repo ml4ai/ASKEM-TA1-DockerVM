@@ -14,11 +14,6 @@ Make sure the bridge network 'asist_net' is running.
 docker network create asist_net
 ```
 
-Make sure you are in the docker_integration git branch
-```
-git checkout docker_integration
-```
-
 ## Start the service containers 
 
 Pull the latest images from docker hub and start them
@@ -32,12 +27,13 @@ The following containers should be running
 skema-rs
 skema-py
 img2mml
+latex2mml
 ```
 </l>
 <p><b>FIXME:</b> Include the mathjax server container</p>
 
 ## Testing
 
-Jupyter notebooks are provided for testing.  Currently these are in ~/ASKEM-TA1-DockerVM/skema/notebooks
+Jupyter notebooks are provided for testing. 
 
 <p><b>FIXME:</b> Needs a better description of the testing process</p>
