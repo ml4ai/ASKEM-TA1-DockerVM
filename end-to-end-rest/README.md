@@ -1,4 +1,4 @@
-# SKEMA Architecture Demo
+# SKEMA Architecture end-to-end Demo
 
 <p><b>FIXME:</b> Include overview text </p>
 
