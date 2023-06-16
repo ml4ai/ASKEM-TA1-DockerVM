@@ -1,4 +1,5 @@
-# Docker Compose file for the img2mml service
+# Docker Compose file for the latex2mml service.
+# This service is part of the img2mml docker image
 version: "3"
 
 networks:
@@ -6,7 +7,7 @@ networks:
     external: true
 
 services:
-  img2mml:
+  latex2mml:
     image: lumai/askem-skema-img2mml:latest
     container_name: latex2mml
     entrypoint: uvicorn latex2mml:app --host=0.0.0.0 --port=8030
@@ -16,5 +17,3 @@ services:
       skema_net:
         aliases:
           - "latex2mml" 
-
-
