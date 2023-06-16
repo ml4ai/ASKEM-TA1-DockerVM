@@ -6,6 +6,18 @@ networks:
     external: true
 
 services:
+
+  latex2mml:
+    image: lumai/askem-skema-img2mml:latest
+    container_name: latex2mml
+    entrypoint: uvicorn latex2mml:app --host=0.0.0.0 --port=8030
+    ports:
+      - "8030:8030"
+    networks:
+      skema_net:
+        aliases:
+          - "latex2mml"
+
   img2mml:
     image: lumai/askem-skema-img2mml:latest
     container_name: img2mml
