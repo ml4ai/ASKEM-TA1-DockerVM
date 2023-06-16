@@ -1,0 +1,3 @@
+
+# do not archive notebook checkpoints
+.ipynb_checkpoints
