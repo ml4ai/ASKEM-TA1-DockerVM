@@ -9,3 +9,27 @@ Run `docker compose up` and after both pipelines have finished, the `outputs` di
 - `extractions_` Arizona output artifacts
 - `mit_` MIT output artifacts
 - `canonical_` merged outputs using canonical data format
+
+# SKEMA Service Components
+
+## Text Reading
+
+Enrique
+
+## Eqn2AMR
+
+### {Img,LaTeX}2pMML
+
+Liang
+
+### pMML2AMR
+
+Justin
+
+## Code2AMR
+
+Justin
+
+## AMR Refinement
+
+Justin
