@@ -1,9 +1,5 @@
 # Docker Compose file for skema services
 version: "3.9"
-
-# networks:
-#   skema_net:
-#     external: true
       
 services:
 
@@ -12,9 +8,10 @@ services:
     container_name: jupyter
     ports:
       - "7777:7777"
-    command: >
-      bash -c "pip install jupyter
-      && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=7777 /data/notebooks"
+    command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks
+    # command: >
+    #   bash -c "pip install jupyter
+    #   && jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks"
     volumes:
       - ./data/:/data/skema
       - ./notebooks:/data/notebooks
@@ -26,21 +23,13 @@ services:
       - "8000:8000" # Change port mapping appropriately before deploying.
     # open browser to http://localhost:8000/docs
     command: ["uvicorn", "skema.skema_py.server:app", "--host", "0.0.0.0", "--port", "8000"]
-    # networks:
-    #   skema_net:
-    #     aliases:
-    #       - "skema-py" 
 
   skema-rs:
     image: lumai/askem-skema-rs:latest
     container_name: skema-rs
-    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --db-host graphdb
+    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --port 8080 --db-host graphdb
     ports:
       - "8080:8080"
-    # networks:
-    #   skema_net:
-    #     aliases:
-    #       - "skema-rs"  # use ${AGENT_NAME} before deploying
 
   # We currently use Memgraph (in-memory graph database).
   graphdb:
@@ -56,10 +45,6 @@ services:
     environment:
       - MEMGRAPH="--log-level=TRACE"
     entrypoint: ["/usr/bin/supervisord"]
-    # networks:
-    #   skema_net:
-    #     aliases:
-    #       - "graphdb"  # use ${AGENT_NAME} before deploying
 
   eq2mml:
     image: lumai/askem-skema-py:latest
@@ -92,10 +77,6 @@ services:
       - "8031:8031"
     working_dir: /app/skema/img2mml/data_generation
     entrypoint: ["npm", "start"]
-    # networks:
-    #   skema_net:
-    #     aliases:
-    #       - "mathjax"
 
 volumes:
   mg_lib:
