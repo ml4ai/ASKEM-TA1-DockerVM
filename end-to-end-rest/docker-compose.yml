@@ -3,6 +3,20 @@ version: "3.9"
       
 services:
 
+  mit: 
+    image: chunwei/mitaskem-api:latest
+    ports:
+      - "9010:8000"
+
+  skema-tr:
+    image: enoriega87/skema-webapp
+    ports:
+      - "9005:9000"
+    environment:
+      secret: 8c2fb5a58ae8d9ec6f7065a25c35aac2
+      SKEMA_HOSTNAME: skema.clulab.org
+      _JAVA_OPTIONS: -Xmx32g -Xms32g -Dfile.encoding=UTF-8
+
   jupyter:
     image: lumai/askem-skema-py:latest
     container_name: jupyter
