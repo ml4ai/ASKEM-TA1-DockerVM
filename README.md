@@ -75,7 +75,21 @@ There are several endpoints that can be used for this aspect of the workflow. Th
 
 ### code2FN
 
-Clay/Tito Not sure what endpoints etc.
+The Code2FN service take code as input (in multiple different forms), runs the program analysis pipeline to parse the files into CAST and translate the CAST into a Function Network (FN) and returns Gromet Function Network Module Collection (GrometFNModuleCollection) JSON.
+
+The service currently accepts Python and Fortran (family) source code. The language type is determined by the filename extensions:
+
+- Python: `.py`
+- Fortran: `.f`, `.for`, `.f95`
+
+The service can accept the following four types of code forms:
+
+- string containing code
+- single file
+- multi-file - array of text-blobs and corresponding filenames
+- .zip archive containing a directory tree of source code files
+
+TODO: Tito and/or Vincent: Please provide pointer to example of calling the endpoint(s).
 
 ### FN2AMR
 
