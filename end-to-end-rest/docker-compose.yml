@@ -3,9 +3,27 @@ version: "3.9"
       
 services:
 
+  mit: 
+    image: chunwei/mitaskem-api:latest
+    ports:
+      - "9010:8000"
+
+  skema-tr:
+    image: enoriega87/skema-webapp
+    ports:
+      - "9005:9000"
+    environment:
+      secret: 8c2fb5a58ae8d9ec6f7065a25c35aac2
+      SKEMA_HOSTNAME: skema.clulab.org
+      _JAVA_OPTIONS: -Xmx20g -Xms20g -Dfile.encoding=UTF-8
+
   jupyter:
     image: lumai/askem-skema-py:latest
     container_name: jupyter
+    environment:
+      - OPENAI_KEY=${OPENAI_KEY}
+      - SKEMA_HOST=http://skema-tr:9000
+      - MIT_HOST=http://mit:8000
     ports:
       - "7777:7777"
     command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks

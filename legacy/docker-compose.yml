@@ -13,7 +13,7 @@ services:
     image: enoriega87/mit-client:latest
     environment:
       - MIT_API=mit
-      - OPENAI_KEY=YOUR_KEY
+      - OPENAI_KEY=${OPENAI_KEY}
     volumes:
       - ./inputs:/data/inputs
       - ./outputs:/data/outputs
@@ -27,7 +27,7 @@ services:
       - ./outputs:/data/outputs
     command: java -Xmx32g -cp ./target/scala-2.12/skema_text_reading-assembly-0.1.0-SNAPSHOT.jar org.ml4ai.skema.text_reading.apps.AnnotatePlainTextFiles -o /data/outputs /data/inputs
   data_format:
-    image: lumai/askem-text-reading-utilities:sha-5273bbb
+    image: lumai/askem-text-reading-utilities:latest
     depends_on:
       arizona:
         condition: service_completed_successfully
@@ -36,3 +36,8 @@ services:
     volumes:
       - ./outputs:/data
     command: python process_directory.py -o /data /data
+  jupyter:
+    ports:
+      - "8888:8888"
+    build: 
+      dockerfile: Dockerfile.tr_notebooks
