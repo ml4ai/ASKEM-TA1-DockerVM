@@ -2,13 +2,14 @@
 
 This example demonstrates end-to-end ASKEM workflows centered around SKEMA system components.
 
-**TODO: add link to architecture diagram**
+[See these slides for an overview of the system architecture](https://docs.google.com/presentation/d/115TErFsAiVWf34D3cUYmdoy4SFahrUTzVSvPZlGFTbI)
 
 ## Requirements
 
 - Docker
 - `docker-compose`
-- 12G+ of RAM
+- 26G+ of RAM 
+  - NOTE: 20G out of 26G is devoted to the text-reading (`skema-tr`) service
 
 ## Start the service containers 
 
