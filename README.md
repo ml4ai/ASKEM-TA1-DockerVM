@@ -14,7 +14,22 @@ Run `docker compose up` and after both pipelines have finished, the `outputs` di
 
 ## Text Reading
 
-Enrique
+The client code for both SKEMA and MIT text reading pipelines is available in `end-to-end-rest/notebooks/text_reading/text_reading_pipeline.ipynb`
+
+To call the unified pipeline use `integrated_text_extractions`.
+
+### Example
+```python
+# Read a paper from the example directory
+test_text = open("1-s2.0-S2211379721005490-main.txt").read()
+
+# Run the integrated pipeline
+extractions = integrated_text_extractions(test_text)
+
+# Print the result
+for attribute in extractions[0].attributes:
+    print(attribute)
+```
 
 ## Eqn2AMR
 
