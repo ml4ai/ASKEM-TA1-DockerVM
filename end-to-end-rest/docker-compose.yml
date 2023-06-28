@@ -20,6 +20,8 @@ services:
   jupyter:
     image: lumai/askem-skema-py:latest
     container_name: jupyter
+    environment:
+      - OPENAI_KEY=${OPENAI_KEY}
     ports:
       - "7777:7777"
     command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks
