@@ -13,7 +13,7 @@ services:
     image: enoriega87/mit-client:latest
     environment:
       - MIT_API=mit
-      - OPENAI_KEY=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
+      - OPENAI_KEY=${OPENAI_KEY}
     volumes:
       - ./inputs:/data/inputs
       - ./outputs:/data/outputs
