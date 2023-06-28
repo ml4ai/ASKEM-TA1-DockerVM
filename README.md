@@ -20,7 +20,18 @@ Enrique
 
 ### {Img,LaTeX}2pMML
 
-Liang
+There are two endpoints available for this part of the workflow, which are demonstrated in the `equations.ipynb` notebook located in the `end-to-end-rest/notebooks` directory.
+
+1. `get("/latex/mml")`
+
+This endpoint handles a GET request and expects a LaTeX string representing an equation as input. It then returns the corresponding presentation MathML for that equation.
+
+2. `post("/image/mml")`
+
+This endpoint handles a POST request and expects a PNG image of an equation as input. It then processes the image and returns the corresponding presentation MathML for that equation.
+
+Please refer to the `equations.ipynb` notebook for a detailed demonstration of how to use these endpoints.
+
 
 ### pMML2AMR
 
