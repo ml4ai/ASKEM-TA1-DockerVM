@@ -1,39 +1,21 @@
-# SKEMA Architecture Demo
+# SKEMA equation processing
 
-<p><b>FIXME:</b> Include overview text </p>
+This example demonstrates end-to-end ASKEM workflows centered around processing equations.
 
-## Environment
-Run this software in a Python virtual environment
+[See these slides for an overview of the system architecture](https://docs.google.com/presentation/d/115TErFsAiVWf34D3cUYmdoy4SFahrUTzVSvPZlGFTbI)
 
-<p><b>FIXME:</b>  List the required pip installations </p>
+## Requirements
 
-## Before starting
-
-Make sure the bridge network 'asist_net' is running.
-```
-docker network create asist_net
-```
+- Docker
+- `docker-compose`
+- 6G of RAM 
 
 ## Start the service containers 
 
-Pull the latest images from docker hub and start them
-```
-docker-compose pull && docker-compose up -d
+Pull the latest images from docker hub and start the services:
+
+```bash
+docker-compose pull && docker-compose up
 ```
 
-The following containers should be running
-<l>
-```
-skema-rs
-skema-py
-img2mml
-latex2mml
-```
-</l>
-<p><b>FIXME:</b> Include the mathjax server container</p>
-
-## Testing
-
-Jupyter notebooks are provided for testing. 
-
-<p><b>FIXME:</b> Needs a better description of the testing process</p>
+Open your browser to [http://127.0.0.1:7777](http://127.0.0.1:7777) to view the example notebooks.
