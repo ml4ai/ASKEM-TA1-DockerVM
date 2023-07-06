@@ -37,9 +37,6 @@ services:
     ports:
       - "7777:7777"
     command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks
-    # command: >
-    #   bash -c "pip install jupyter
-    #   && jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks"
     volumes:
       - ./data/:/data/skema
       - ./notebooks:/data/notebooks
@@ -50,7 +47,10 @@ services:
     ports:
       - "8000:8000" # Change port mapping appropriately before deploying.
     # open browser to http://localhost:8000/docs
-    command: ["uvicorn", "skema.skema_py.server:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment: 
+      - "SKEMA_RS_ADDESS=skema-rs:8080"
+      - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
+    command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
   skema-rs:
     image: lumai/askem-skema-rs:latest
@@ -81,7 +81,7 @@ services:
       # FIXME: add `condition: service_healthy` and healthcheck
       - mathjax
     # open browser to http://localhost:8000/docs
-    entrypoint: uvicorn skema.img2mml.eq2mml:app --host=0.0.0.0 --port 8001
+    entrypoint: uvicorn skema.img2mml.eqn2mml:app --host=0.0.0.0 --port 8001
     ports:
       - "8001:8001" # Change port mapping appropriately before deploying.
     environment:

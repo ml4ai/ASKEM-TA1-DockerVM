@@ -1,1 +1,0 @@
-\dot{R}(t)=\eta D(t)+\theta A(t)-(\nu+\xi) R(t)

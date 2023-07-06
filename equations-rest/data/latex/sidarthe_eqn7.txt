@@ -1,1 +1,0 @@
-\dot{H}(t)=\lambda I(t)+\rho D(t)+\kappa A(t)+\xi R(t)+\sigma T(t)

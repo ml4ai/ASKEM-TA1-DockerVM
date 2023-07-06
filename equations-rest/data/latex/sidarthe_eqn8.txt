@@ -1,1 +1,0 @@
-\dot{E}(t)=\tau T(t)
