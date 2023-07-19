@@ -36,16 +36,9 @@ services:
     environment:
       - "SKEMA_RS_ADDESS=skema-rs:8080"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
-
-    command:
-      [
-        "uvicorn",
-        "skema.rest.api:app",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000"
-      ]
+      - "OPENAI_KEY=DONT_FORGET_UR_KEY"
+      
+    command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
   skema-rs:
     image: lumai/askem-skema-rs:latest
