@@ -1,9 +1,9 @@
 # Docker Compose file for skema services
 version: "3.9"
-      
+
 services:
 
-  mit-tr: 
+  mit-tr:
     image: chunwei/mitaskem-api:latest
     ports:
       - "9010:8000"
@@ -16,7 +16,6 @@ services:
       secret: 8c2fb5a58ae8d9ec6f7065a25c35aac2
       SKEMA_HOSTNAME: skema.clulab.org
       _JAVA_OPTIONS: -Xmx20g -Xms20g -Dfile.encoding=UTF-8
-
 
   jupyter:
     image: lumai/askem-skema-py:latest
@@ -34,7 +33,7 @@ services:
     ports:
       - "8000:8000" # Change port mapping appropriately before deploying.
     # open browser to http://localhost:8000/docs
-    environment: 
+    environment:
       - "SKEMA_RS_ADDESS=skema-rs:8080"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
       - "OPENAI_KEY=DONT_FORGET_UR_KEY"
@@ -44,7 +43,7 @@ services:
   skema-rs:
     image: lumai/askem-skema-rs:latest
     container_name: skema-rs
-    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --port 8080 --db-host graphdb
+    entrypoint: ./target/release/skema_service --host 0.0.0.0 --port 8080 --db-host graphdb
     ports:
       - "8080:8080"
 
@@ -61,9 +60,8 @@ services:
       - mg_etc:/etc/memgraph
     environment:
       - MEMGRAPH="--log-level=TRACE"
-    entrypoint: ["/usr/bin/supervisord"]
+    entrypoint: [ "/usr/bin/supervisord" ]
 
-  
   # example cmd: curl -X POST http://0.0.0.0:8031/tex2mml \
   # -H "Content-Type: application/json" \
   # -d '{"tex_src": "E = mc^{2}"}'
@@ -77,7 +75,7 @@ services:
     ports:
       - "8031:8031"
     working_dir: /app/skema/img2mml/data_generation
-    entrypoint: ["npm", "start"]
+    entrypoint: [ "npm", "start" ]
 
 volumes:
   mg_lib:
