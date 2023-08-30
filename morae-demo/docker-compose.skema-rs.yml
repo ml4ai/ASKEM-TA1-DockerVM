@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.skema-rs
-    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --db-host database
+    entrypoint: ./target/release/skema_service --host 0.0.0.0 --port 8080 --db-host database
     ports:
       - "8080:8080"
 
@@ -22,8 +22,7 @@ services:
       - mg_log:/var/log/memgraph
       - mg_etc:/etc/memgraph
     environment:
-      - MEMGRAPH="--log-level=TRACE"
-    entrypoint: ["/usr/bin/supervisord"]
+      - MEMGRAPH=--memory-limit=3000 --log-level=TRACE"
 
 volumes:
   mg_lib:
