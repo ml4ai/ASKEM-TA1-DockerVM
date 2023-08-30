@@ -13,7 +13,6 @@ services:
       - mg_etc:/etc/memgraph
     environment:
       - MEMGRAPH=--memory-limit=3000 --log-level=TRACE"
-    entrypoint: ["/usr/bin/supervisord"]
 
 volumes:
   mg_lib:
