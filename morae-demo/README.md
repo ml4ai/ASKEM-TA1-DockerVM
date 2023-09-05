@@ -1,1 +1,0 @@
-I tend to just run 'docker compose up' on the whole service before running notebooks or testing things. Might not be the best practice but I worry about container interactions so I run them all.
