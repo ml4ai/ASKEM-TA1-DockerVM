@@ -1,9 +1,9 @@
 # Docker Compose file for skema services
 version: "3.9"
-      
+
 services:
 
-  mit-tr: 
+  mit-tr:
     image: chunwei/mitaskem-api:latest
     ports:
       - "9010:8000"
@@ -17,29 +17,12 @@ services:
       SKEMA_HOSTNAME: skema.clulab.org
       _JAVA_OPTIONS: -Xmx20g -Xms20g -Dfile.encoding=UTF-8
 
-  integrated-tr:
-    image: lumai/askem-skema-py:latest
-    container_name: integrated-tr
-    environment:
-      - OPENAI_KEY=${OPENAI_KEY}
-      - SKEMA_HOST=http://skema-tr:9000
-      - MIT_HOST=http://mit-tr:8000
-    ports:
-      - "7778:7778"
-    volumes:
-      - ./code:/app/code
-    command: ["uvicorn", "code.integrated-tr-rest:app", "--host", "0.0.0.0", "--port", "7778"]
-
-
   jupyter:
     image: lumai/askem-skema-py:latest
     container_name: jupyter
     ports:
       - "7777:7777"
     command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks
-    # command: >
-    #   bash -c "pip install jupyter
-    #   && jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks"
     volumes:
       - ./data/:/data/skema
       - ./notebooks:/data/notebooks
@@ -50,12 +33,17 @@ services:
     ports:
       - "8000:8000" # Change port mapping appropriately before deploying.
     # open browser to http://localhost:8000/docs
-    command: ["uvicorn", "skema.skema_py.server:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      - "SKEMA_RS_ADDESS=skema-rs:8080"
+      - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
+      - "OPENAI_KEY=DONT_FORGET_UR_KEY"
+      
+    command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
   skema-rs:
     image: lumai/askem-skema-rs:latest
     container_name: skema-rs
-    entrypoint: cargo run --release --bin skema_service -- --host 0.0.0.0 --port 8080 --db-host graphdb
+    entrypoint: ./target/release/skema_service --host 0.0.0.0 --port 8080 --db-host graphdb
     ports:
       - "8080:8080"
 
@@ -71,26 +59,8 @@ services:
       - mg_log:/var/log/memgraph
       - mg_etc:/etc/memgraph
     environment:
-      - MEMGRAPH="--log-level=TRACE"
-    entrypoint: ["/usr/bin/supervisord"]
+      - MEMGRAPH=--memory-limit=3000 --log-level=TRACE"
 
-  eq2mml:
-    image: lumai/askem-skema-py:latest
-    container_name: eq2mml
-    depends_on:
-      # FIXME: add `condition: service_healthy` and healthcheck
-      - mathjax
-    # open browser to http://localhost:8000/docs
-    entrypoint: uvicorn skema.img2mml.eq2mml:app --host=0.0.0.0 --port 8001
-    ports:
-      - "8001:8001" # Change port mapping appropriately before deploying.
-    environment:
-      - "SKEMA_MATHJAX_HOST=mathjax"
-      - "SKEMA_MATHJAX_PORT=8031"
-    # networks:
-    #   skema_net:
-    #     aliases:
-    #       - "eq2mml"
   # example cmd: curl -X POST http://0.0.0.0:8031/tex2mml \
   # -H "Content-Type: application/json" \
   # -d '{"tex_src": "E = mc^{2}"}'
@@ -104,7 +74,7 @@ services:
     ports:
       - "8031:8031"
     working_dir: /app/skema/img2mml/data_generation
-    entrypoint: ["npm", "start"]
+    entrypoint: [ "npm", "start" ]
 
 volumes:
   mg_lib:
