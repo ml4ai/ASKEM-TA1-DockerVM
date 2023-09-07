@@ -9,7 +9,7 @@ services:
       - "9010:8000"
 
   skema-tr:
-    image: enoriega87/skema-webapp
+    image: lumai/askem-skema-text-reading
     ports:
       - "9005:9000"
     environment:
