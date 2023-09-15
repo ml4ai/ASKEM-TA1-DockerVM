@@ -11,11 +11,11 @@ services:
   skema-tr:
     image: lumai/askem-skema-text-reading
     ports:
-      - "9005:9000"
+      - "9000:9000"
     environment:
       secret: 8c2fb5a58ae8d9ec6f7065a25c35aac2
       SKEMA_HOSTNAME: skema.clulab.org
-      _JAVA_OPTIONS: -Xmx20g -Xms20g -Dfile.encoding=UTF-8
+      _JAVA_OPTIONS: -Xmx10g -Xms10g -Dfile.encoding=UTF-8
 
   jupyter:
     image: lumai/askem-skema-py:latest
@@ -35,6 +35,7 @@ services:
     # open browser to http://localhost:8000/docs
     environment:
       - "SKEMA_RS_ADDESS=skema-rs:8080"
+      - "SKEMA_TR_ADDRESS=http://skema-tr:9000"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
       - "OPENAI_KEY=DONT_FORGET_UR_KEY"
       
