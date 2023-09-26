@@ -13,7 +13,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      secret: 8c2fb5a58ae8d9ec6f7065a25c35aac2
+      APPLICATION_SECRET: 8c2fb5a58ae8d9ec6f7065a25c35aac2
       SKEMA_HOSTNAME: skema.clulab.org
       _JAVA_OPTIONS: -Xmx10g -Xms10g -Dfile.encoding=UTF-8
 
