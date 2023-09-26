@@ -9,7 +9,7 @@ services:
       - "9010:8000"
 
   skema-tr:
-    image: lumai/askem-skema-text-reading
+    image: lumai/askem-skema-text-reading:latest
     ports:
       - "9000:9000"
     environment:
