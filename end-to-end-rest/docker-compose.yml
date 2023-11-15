@@ -61,6 +61,8 @@ services:
       - mg_etc:/etc/memgraph
     environment:
       - MEMGRAPH=--memory-limit=3000 --log-level=TRACE"
+      - "SKEMA_GRAPH_DB_HOST=graphdb"
+      - "SKEMA_GRAPH_DB_PORT=7687"
 
   # example cmd: curl -X POST http://0.0.0.0:8031/tex2mml \
   # -H "Content-Type: application/json" \
