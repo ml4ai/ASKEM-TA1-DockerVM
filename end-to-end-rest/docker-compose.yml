@@ -32,21 +32,27 @@ services:
     container_name: skema-py
     ports:
       - "8000:8000" # Change port mapping appropriately before deploying.
-    # open browser to http://localhost:8000/docs
+    # open browser to http://127.0.0.1:8000/docs
     environment:
-      - "SKEMA_RS_ADDESS=skema-rs:8080"
+      - "SKEMA_RS_ADDESS=http://skema-rs:8080"
       - "SKEMA_TR_ADDRESS=http://skema-tr:9000"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
-      - "OPENAI_KEY=DONT_FORGET_UR_KEY"
+      - "OPENAI_KEY=DONT_FORGET_YOUR_KEY"
       
     command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
   skema-rs:
     image: lumai/askem-skema-rs:latest
     container_name: skema-rs
-    entrypoint: ./target/release/skema_service --host 0.0.0.0 --port 8080 --db-host graphdb
+    entrypoint: ./target/release/skema_service
     ports:
       - "8080:8080"
+    # open browser to http://127.0.0.1:8080/docs/index.html
+    environment:
+      - "SKEMA_RS_HOST=0.0.0.0"
+      - "SKEMA_RS_PORT=8080"
+      - "SKEMA_GRAPH_DB_HOST=graphdb"
+      - "SKEMA_GRAPH_DB_PORT=7687"
 
   # We currently use Memgraph (in-memory graph database).
   graphdb:
