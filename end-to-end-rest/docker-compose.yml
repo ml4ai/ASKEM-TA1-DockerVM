@@ -35,6 +35,9 @@ services:
     # open browser to http://127.0.0.1:8000/docs
     environment:
       - "SKEMA_RS_ADDESS=http://skema-rs:8080"
+      - "SKEMA_GRAPH_DB_PROTO=bolt://"
+      - "SKEMA_GRAPH_DB_PORT=7687"
+      - "SKEMA_GRAPH_DB_HOST=graphdb"
       - "SKEMA_TR_ADDRESS=http://skema-tr:9000"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
       - "OPENAI_KEY=DONT_FORGET_YOUR_KEY"
