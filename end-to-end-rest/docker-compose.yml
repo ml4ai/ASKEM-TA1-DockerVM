@@ -41,6 +41,7 @@ services:
       - "SKEMA_TR_ADDRESS=http://skema-tr:9000"
       - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
       - "OPENAI_KEY=DONT_FORGET_YOUR_KEY"
+      - "SKEMA_OPENAI_KEY=DONT_FORGET_YOUR_KEY"
       
     command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
 
