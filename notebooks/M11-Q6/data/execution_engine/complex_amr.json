@@ -1,0 +1,41 @@
+{
+    "semantics": {
+        "ode": {
+            "parameters": [
+                {"name": "a"},
+                {"name": "b"},
+                {"name": "c"},
+                {"name": "int_add"},
+                {"name": "float_add"},
+                {"name": "str_concat"},
+                {"name": "list_concat"},
+                {"name": "int_sub"},
+                {"name": "float_sub"},
+                {"name": "int_mult"},
+                {"name": "float_mult"},
+                {"name": "str_repeat"},
+                {"name": "list_repeat"},
+                {"name": "float_div"},
+                {"name": "int_floor_div"},
+                {"name": "int_mod"},
+                {"name": "int_pow"},
+                {"name": "float_pow"},
+                {"name": "int_lshift"},
+                {"name": "int_rshift"},
+                {"name": "bit_or"},
+                {"name": "bit_and"},
+                {"name": "bit_xor"},
+                {"name": "eq_int"},
+                {"name": "eq_str"},
+                {"name": "eq_list"},
+                {"name": "neq_int"},
+                {"name": "neq_str"},
+                {"name": "neq_list"},
+                {"name": "gt_int"},
+                {"name": "gte_int"},
+                {"name": "lt_int"},
+                {"name": "lte_int"}
+            ]
+        }
+    }
+}
