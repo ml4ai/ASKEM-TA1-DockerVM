@@ -1,0 +1,84 @@
+# Docker Compose file for skema services
+version: "3.9"
+
+services:
+
+#1  mit-tr:
+#1    image: chunwei/mitaskem-api:latest
+#1    ports:
+#1      - "9010:8000"
+
+#2  skema-tr:
+#2    image: lumai/askem-skema-text-reading:latest
+#2    ports:
+#2      - "9000:9000"
+#2    environment:
+#2      APPLICATION_SECRET: 8c2fb5a58ae8d9ec6f7065a25c35aac2
+#2      SKEMA_HOSTNAME: skema.clulab.org
+#2      _JAVA_OPTIONS: -Xmx10g -Xms10g -Dfile.encoding=UTF-8
+
+#3  jupyter:
+#3    image: lumai/askem-skema-py:latest
+#3    container_name: jupyter
+#3    ports:
+#3      - "7777:7777"
+#3    command: jupyter notebook --no-browser --allow-root --ip='*' --NotebookApp.token='' --NotebookApp.password='' --port=7777 /data/notebooks
+#3    volumes:
+#3      - ./data/:/data/skema
+#3      - ./notebooks:/data/notebooks
+
+#4  skema-py:
+#4    image: lumai/askem-skema-py:latest
+#4    container_name: skema-py
+#4    ports:
+#4      - "8000:8000" # Change port mapping appropriately before deploying.
+#4    # open browser to http://localhost:8000/docs
+#4    environment:
+#4      - "SKEMA_RS_ADDESS=skema-rs:8080"
+#4      - "SKEMA_TR_ADDRESS=http://skema-tr:9000"
+#4      - "SKEMA_MATHJAX_ADDRESS=http://mathjax:8031"
+#4      - "OPENAI_KEY=DONT_FORGET_UR_KEY"
+#4      
+#4    command: ["uvicorn", "skema.rest.api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+#5  skema-rs:
+#5    image: lumai/askem-skema-rs:latest
+#5    container_name: skema-rs
+#5    entrypoint: ./target/release/skema_service --host 0.0.0.0 --port 8080 --db-host graphdb
+#5    ports:
+#5      - "8080:8080"
+
+#6  # We currently use Memgraph (in-memory graph database).
+#6  graphdb:
+#6    image: "memgraph/memgraph-platform"
+#6    ports:
+#6      - "7687:7687"
+#6      - "3000:3000"
+#6      - "7444:7444"
+#6    volumes:
+#6      - mg_lib:/var/lib/memgraph
+#6      - mg_log:/var/log/memgraph
+#6      - mg_etc:/etc/memgraph
+#6    environment:
+#6      - MEMGRAPH=--memory-limit=3000 --log-level=TRACE"
+
+  # example cmd: curl -X POST http://0.0.0.0:8031/tex2mml \
+  # -H "Content-Type: application/json" \
+  # -d '{"tex_src": "E = mc^{2}"}'
+  
+#7  mathjax:
+#7    #image: lumai/askem-skema-py:latest
+#7    # ... or to build locally:
+#7    image: lumai/askem-skema-py:latest
+#7    environment:
+#7      - "SKEMA_MATHJAX_HOST=0.0.0.0"
+#7      - "SKEMA_MATHJAX_PORT=8031"
+#7    ports:
+#7      - "8031:8031"
+#7    working_dir: /app/skema/img2mml/data_generation
+#7    entrypoint: [ "npm", "start" ]
+
+#7volumes:
+#7  mg_lib:
+#7  mg_log:
+#7  mg_etc:
