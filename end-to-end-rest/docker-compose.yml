@@ -34,7 +34,7 @@ services:
       - "8000:8000" # Change port mapping appropriately before deploying.
     # open browser to http://127.0.0.1:8000/docs
     environment:
-      - "SKEMA_RS_ADDESS=http://skema-rs:8080"
+      - "SKEMA_RS_ADDRESS=http://skema-rs:8080"
       - "SKEMA_GRAPH_DB_PROTO=bolt://"
       - "SKEMA_GRAPH_DB_PORT=7687"
       - "SKEMA_GRAPH_DB_HOST=graphdb"
