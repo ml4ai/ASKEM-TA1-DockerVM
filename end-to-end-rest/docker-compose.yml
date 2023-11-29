@@ -57,6 +57,7 @@ services:
       - "SKEMA_RS_PORT=8080"
       - "SKEMA_GRAPH_DB_HOST=graphdb"
       - "SKEMA_GRAPH_DB_PORT=7687"
+      - "SKEMA_GRAPH_DB_PROTO=bolt://"
 
   # We currently use Memgraph (in-memory graph database).
   graphdb:
