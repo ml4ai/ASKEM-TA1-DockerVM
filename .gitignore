@@ -2,3 +2,4 @@
 # do not archive notebook checkpoints
 .ipynb_checkpoints
 __pycache__/
+.DS_Store
