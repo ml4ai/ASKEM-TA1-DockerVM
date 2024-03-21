@@ -50,25 +50,21 @@ Please refer to the `equations.ipynb` notebook for a detailed demonstration of h
 
 ### pMML2AMR
 
-There are several endpoints that can be used for this aspect of the workflow. They are demonstrated in the `MORAE_demo.ipynb` notebook in the `morae-demo/` directory. 
+There are several endpoints that can be used for this aspect of the workflow. They are demonstrated in the `eqn2amr.ipynb` notebook in the `end-to-end-rest/notebooks` directory. 
 
-1. `put("/mathml/petrinet")` 
+1. `post("/workflows/consolidated/equations-to-amr")` 
 
-	Is a put request takes in a vector of mathml strings and returns an AMR of the PetriNet variety. 
-2. `put("/mathml/regnet")`
+	Is a put request takes in a vector of mathml or LaTeX strings and returns an AMR of the selected variety, either Petrinet, RegNet, gAMR, MET, or Decapode. 
 
-	Is a put request takes in a vector of mathml strings and returns an AMR of the RegNet variety.
-	
-3. `put("/mathml/amr")` 
-
-	Is a put request that takes in a JSON like object which includes a vector of mathml strings and a model keyword to indicate the type of AMR wanted out, as below for an example for a regnet:
-	`{
+	An example input for a regnet below:
+	```
+    {
     "mathml": [
         "<math><mrow><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>alpha</mi><mi>x</mi><mo>-</mo><mi>beta</mi><mi>x</mi><mi>y</mi></mrow></math>",
         "<math><mrow><mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>delta</mi><mi>x</mi><mi>y</mi><mo>-</mo><mi>gamma</mi><mi>y</mi></mrow></math>"
     ],
     "model": "regnet"
-}`
+    }```
 
 
 ## Code2AMR
@@ -93,15 +89,15 @@ TODO: Tito and/or Vincent: Please provide pointer to example of calling the endp
 
 ### FN2AMR
 
-This is demonstrated in the `MORAE_demo.ipynb` notebook in the `morae-demo/` directory.
+This is demonstrated in the `code2amr.ipynb` notebook in the `end-to-end-rest/notebooks` directory.
 
-This part of the workflow currently has two endpoints, one for PertriNets and one for RegNets, however only PetriNet's is supported right now. It is accessed through the following endpoint: 
+This part of the workflow currently has two endpoints, one for code-snippets and one for code archives (.zip files), however only PetriNet's are primarily supported right now AMR extractions. The code-snippet workflow is accessed through the following endpoint: 
 
-`put("/models/PN")`
+`post("/workflows/consolidated/code-snippets-to-amrs")`
 
-This endpoint takes in a gromet function network JSON (the output of code2FN) and attempts to infer the core dynamics of a PetriNet in it and export them as an AMR. 
+The endpoint to take in a code archive is the following:
 
-In the near future there will be support for RegNets as well via another endpoint.
+`post("/workflows/code/llm-assisted-codebase-to-pn-amr")`
 
 ## AMR Refinement
 
