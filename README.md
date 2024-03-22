@@ -14,22 +14,19 @@ Run `docker compose up` and after both pipelines have finished, the `outputs` di
 
 ## Text Reading
 
-The client code for both SKEMA and MIT text reading pipelines is available in `end-to-end-rest/notebooks/text_reading/text_reading_pipeline.ipynb`
+The client code for both SKEMA and MIT text reading pipelines is available in `end-to-end-rest/notebooks/text_reading_pipeline.ipynb`
 
-To call the unified pipeline use `integrated_text_extractions`.
+This notebook contains examples of how to annotate:
+- PDFs
+- Plain text files
+- Call the embedding based MIRA grounding.
 
-### Example
-```python
-# Read a paper from the example directory
-test_text = open("1-s2.0-S2211379721005490-main.txt").read()
+Additionally, the variable extraction endpoints support an optional `AMR` file that will be linked with the variables extracted at the end of extraction. See the PDF annotation example for reference.
 
-# Run the integrated pipeline
-extractions = integrated_text_extractions(test_text)
+## AMR alignment
 
-# Print the result
-for attribute in extractions[0].attributes:
-    print(attribute)
-```
+The notebook `end-to-end-rest/notebooks/text_reading/metal.ipynb` contains an example of how to call the AMR linking endpoint if you have a file with variable extractions and a pre-existing AMR. 
+
 
 ## Eqn2AMR
 
