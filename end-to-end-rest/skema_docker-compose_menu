@@ -1,0 +1,301 @@
+#!/usr/bin/env bash
+
+echo -ne '\033]0;SKEMA Docker-Compose Menu\007'
+
+MY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+Color_Off='\033[0m'       # Text Reset
+
+#Regular Colors
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
+# Bold
+BBlack='\033[1;30m'       # Black
+BRed='\033[1;31m'         # Red
+BGreen='\033[1;32m'       # Green
+BYellow='\033[1;33m'      # Yellow
+BBlue='\033[1;34m'        # Blue
+BPurple='\033[1;35m'      # Purple
+BCyan='\033[1;36m'        # Cyan
+BWhite='\033[1;37m'       # White
+
+# Font Effects
+Bold='\e[1m'
+Italic='\e[3m'
+BItalic='\e[3m\e[1m'
+Underline='\e[4m'
+Strikethrough='\e[9m'
+
+# No Color or Font Effects
+NC=`echo "\033[m"`
+
+# Menu Colors
+normal=`echo "\033[m"`
+menu=`echo "\033[36m"` #Blue
+number=`echo "\033[33m"` #yellow
+bgred=`echo "\033[41m"`
+fgred=`echo "\033[31m"`
+msgcolor=`echo "\033[01;31m"` # bold red
+
+# checked="${BGreen}\u2714 ${BBlue}";
+checked="${BGreen}\xE2\x9C\x94 ${BBlue}";
+unchecked="${Black}    ${Black}";
+CL_OPT="";
+NO_MENU="";
+
+while getopts "h" cmd_ln_opt; do  # Loop: Get the next option;
+  case "${cmd_ln_opt}" in
+    h) CL_OPT="help";
+    ;;
+    :) echo "Error: -${OPTARG} requires an argument.";
+       exit;
+    ;;
+    *) exit;
+    ;;
+  esac
+done
+
+# A_$opt([0:Decription] [1:Checkmark & Color] [2: Service Container Name]) 
+A_1=("mit-tr: chunwei/mitaskem-api:latest" "${checked}" "end-to-end-rest-mit-tr-1")
+A_2=("skema-tr: lumai/askem-skema-text-reading:latest" "${checked}" "end-to-end-rest-skema-tr-1")
+A_3=("jupyter: lumai/askem-skema-py:latest" "${checked}" "jupyter")
+A_4=("skema-py: lumai/askem-skema-py:latest" "${checked}" "skema-py")
+A_5=("skema-rs: lumai/askem-skema-rs:latest" "${checked}" "skema-rs")
+A_6=("graphdb: memgraph/memgraph-platform" "${checked}" "end-to-end-rest-graphdb-1")
+A_7=("mathjax: lumai/askem-skema-py:latest" "${checked}" "end-to-end-rest-mathjax-1")
+
+chk_cnt=0;
+yml_template="docker-compose_template.yml";
+yml_temp="docker-compose_temp.yml";
+
+
+show_menu(){
+  if [[ "${NO_MENU}" == "y" ]]; then exit; fi
+
+  if [[ "${CL_OPT}" == "" ]]; then
+    printf "\n${menu}***${Yellow}Check / Un-Check Service${menu}*********************************************************************${normal}\n"
+    sx=1;
+    A_DESC="A_1[0]";
+    while [ "${!A_DESC}" != '' ]
+    do
+      A_CHKM="A_${sx}[1]";
+      printf "${menu}**${number} ${sx}) ${!A_CHKM} ${!A_DESC}${normal}\n";
+      sx=$((sx+1));
+      A_DESC="A_${sx}[0]";
+    done
+    printf "\n${menu}***${Yellow}Perform Function on Checked Services${menu}*********************************************************${normal}\n"
+    printf "${menu}**${number} c) ${Green}Docker Compose Checked Services${normal}\n"
+    printf "${menu}**${number} s) ${Green}Docker Start Checked Services${normal}\n"
+    printf "${menu}**${number} q) ${Red}Docker Stop ${Green}Checked Services${normal}\n"
+    printf "${menu}**${number} r) ${Purple}Show Status of Running Services${normal}\n"
+    printf "\n${menu}************************************************************************************************${normal}\n"
+
+    if [[ "${IS_ANNOUNCING}" == "" ]]; then
+      printf "Please enter a menu option and enter ${fgred}(x to exit program): ${normal}"
+      read opt
+    fi
+  else
+    opt="${CL_OPT}";
+    NO_MENU="y";
+  fi
+
+}
+
+
+yes_no_question() {
+  local question="$1 [y/n]: "
+  local ans=""
+  while [[ "$ans" != "y" ]] && [[ "$ans" != "n" ]]; do
+    echo -n -e "$question"
+    read -r ans
+  done
+
+  if [[ $ans == "y" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
+enter_return_main_menu(){
+  if [[ "${NO_MENU}" == "y" ]]; then exit; fi
+  printf "${NC}${BYellow}${Italic}";
+  read -n 1 -r -s -p $'(Press <Enter> to return to main menu)';
+  printf "${NC}";
+}
+
+
+# do_print_help(){
+#   HELP_TEXT="$(<${MY_DIR}/${!A_FILE})";
+#   eval "${HELP_TEXT}";
+#   enter_return_main_menu;
+# }
+
+
+create_temp_yml(){
+  cp ${MY_DIR}/${yml_template} ${MY_DIR}/${yml_temp};
+  # cp ${cp};
+  for (( x=1; x<=20; x++ ))
+  do
+    A_CHKM="A_${x}[1]";
+    if [[ "${!A_CHKM}" == *"${checked}"* ]]; then
+      rs="s/#${x}//g";
+      sed -e ${rs} ${MY_DIR}/${yml_temp} >  ${MY_DIR}/tmp;
+      mv ${MY_DIR}/tmp ${MY_DIR}/${yml_temp};
+    fi
+  done
+
+}
+
+
+count_checks(){
+  chk_cnt=0;
+  for (( x=1; x<=20; x++ ))
+  do
+    A_CHKM="A_${x}[1]";
+    if [[ "${!A_CHKM}" == *"${checked}"* ]]; then chk_cnt=$(( $chk_cnt + 1 )); fi
+  done
+}
+
+
+
+do_compose(){
+  count_checks;
+  if [[ ${chk_cnt} != 0 ]]; then
+    yes_no_question "${Yellow}Do you want to continue to ${Green}Docker Compose${Yellow} the ${BGreen}${chk_cnt}${Yellow} checked Services?${normal}";
+    if [[ $? -eq 0 ]]; then
+      printf "${BGreen}Composing Services...${normal}";
+      create_temp_yml;
+      docker compose -f ${MY_DIR}/${yml_temp} up;
+    fi
+  else
+    printf "${BRed}No Services Checked!${normal}";
+    sleep 3;
+  fi
+}
+
+
+do_start(){
+  count_checks;
+  if [[ ${chk_cnt} != 0 ]]; then
+    yes_no_question "${Yellow}Do you want to continue to ${Green}Docker Start${Yellow} the ${BGreen}${chk_cnt}${Yellow} checked Services?${normal}";
+    if [[ $? -eq 0 ]]; then
+      printf "${BGreen}Starting Services...${normal}\n";
+      for (( x=1; x<=20; x++ ))
+      do
+        A_CHKM="A_${x}[1]";
+        if [[ "${!A_CHKM}" == *"${checked}"* ]]; then
+          A_NAME="A_${x}[2]";
+          docker start ${!A_NAME};
+        fi
+      done
+      enter_return_main_menu;
+    fi
+  else
+    printf "${BRed}No Services Checked!${normal}";
+    sleep 3;
+  fi
+}
+
+
+do_stop(){
+  count_checks;
+  if [[ ${chk_cnt} != 0 ]]; then
+    yes_no_question "${Yellow}Do you want to continue to ${Red}Docker Stop${Yellow} the ${BGreen}${chk_cnt}${Yellow} checked Services?${normal}";
+    if [[ $? -eq 0 ]]; then
+      printf "${BRed}Stopping Services...${normal}\n";
+      for (( x=1; x<=20; x++ ))
+      do
+        A_CHKM="A_${x}[1]";
+        if [[ "${!A_CHKM}" == *"${checked}"* ]]; then
+          A_NAME="A_${x}[2]";
+          docker stop ${!A_NAME};
+        fi
+      done
+      enter_return_main_menu;
+    fi
+  else
+    printf "${BRed}No Services Checked!${normal}";
+    sleep 3;
+  fi
+}
+
+
+
+do_show_running(){
+  docker compose ps;
+  enter_return_main_menu;
+}
+
+
+clear;
+show_menu;
+
+while [ "$opt" != '' ]
+do
+  if [ "$opt" = '' ]; then
+    printf "return pressed!";
+    sleep 10;
+    clear;
+    show_menu;
+    continue;
+  else
+    case $opt in
+      1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )
+        clear;
+        A_CHKM="A_${opt}[1]";
+        if [[ "${!A_CHKM}" == *"${checked}"* ]]; then
+          a_set="A_${opt}[1]=\" ${unchecked}\"";
+        else
+          a_set="A_${opt}[1]=\"${checked}\"";
+        fi
+        eval ${a_set};
+        show_menu;
+      ;;
+      c)
+        do_compose;
+        clear;
+        show_menu;
+      ;;
+      s)
+        do_start;
+        clear;
+        show_menu;
+      ;;
+      q)
+        do_stop;
+        clear;
+        show_menu;
+      ;;
+      r)
+        do_show_running;
+        clear;
+        show_menu;
+      ;;
+      # help) do_print_help;
+      #       clear;
+      #       show_menu;
+      # ;;
+      x)exit;
+      ;;
+      \n)exit;
+      ;;
+      *)
+        clear;
+        option_picked "Pick an option from the menu";
+        show_menu;
+      ;;
+    esac
+  fi
+done
+
+exit;
+
