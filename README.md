@@ -73,16 +73,14 @@ The Code2FN service take code as input (in multiple different forms), runs the p
 The service currently accepts Python and Fortran (family) source code. The language type is determined by the filename extensions:
 
 - Python: `.py`
-- Fortran: `.f`, `.for`, `.f95`
+- Fortran: `.f`, `.F`, `.for`, `.f90`, `.F90`, `.f95`, `.F95`
 
-The service can accept the following four types of code forms:
+The service can accept the following types of code forms:
 
-- string containing code
-- single file
-- multi-file - array of text-blobs and corresponding filenames
-- .zip archive containing a directory tree of source code files
+- A JSON serialized code system (fn-given-filepaths)
+- .zip archive containing a directory tree of source code files (fn-given-filepaths-zip)
 
-TODO: Tito and/or Vincent: Please provide pointer to example of calling the endpoint(s).
+The two endpoints, as well as the expected structure of the JSON serialized code system, are demonstrated in the two notebooks `end-to-end-rest/notebooks/code2fn/fn-given-filepaths.ipynb` and `end-to-end-rest/notebooks/code2fn/fn-given-filepaths-zip.ipynb`
 
 ### FN2AMR
 
